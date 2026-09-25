@@ -31,7 +31,8 @@
       </div>
       <div class="panel">
         <h2>排班统计</h2>
-        <el-statistic title="本月预估工时" :value="shifts.list.length * 5" suffix="小时" />
+        <p class="stat-tip">按门店和月份汇总员工总工时与加班，班次冲突会标记异常。</p>
+        <el-button v-permission="['OWNER','MANAGER']" type="primary" @click="$router.push('/schedule/work-hours')">查看月度工时</el-button>
       </div>
     </div>
     <el-drawer v-model="formVisible" title="创建排班"><ScheduleForm @submit="save" /></el-drawer>
@@ -106,5 +107,10 @@ article {
 
 .lower {
   margin-top: 18px;
+}
+
+.stat-tip {
+  color: #697066;
+  margin: 0 0 12px;
 }
 </style>
