@@ -8,6 +8,8 @@ import { requireFields } from '../middlewares/validator.middleware.js';
 export const shiftRoutes = Router();
 
 shiftRoutes.get('/', controller.index);
+shiftRoutes.get('/monthly-summary', requireRoles([UserRole.OWNER, UserRole.MANAGER]), controller.monthlySummary);
+shiftRoutes.get('/monthly-summary/export', requireRoles([UserRole.OWNER, UserRole.MANAGER]), controller.exportMonthlySummary);
 shiftRoutes.post('/', requireRoles([UserRole.OWNER, UserRole.MANAGER]), requireFields(['employeeId', 'date', 'shiftType', 'startTime', 'endTime', 'storeId']), auditMiddleware('CREATE_SHIFT', 'shifts'), controller.create);
 shiftRoutes.post('/auto-generate', requireRoles([UserRole.OWNER, UserRole.MANAGER]), requireFields(['storeId', 'date']), auditMiddleware('AUTO_GENERATE_SHIFT', 'shifts'), controller.autoGenerate);
 shiftRoutes.put('/:id', requireRoles([UserRole.OWNER, UserRole.MANAGER]), auditMiddleware('UPDATE_SHIFT', 'shifts'), controller.update);

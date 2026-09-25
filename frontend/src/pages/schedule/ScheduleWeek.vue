@@ -31,7 +31,10 @@
       </div>
       <div class="panel">
         <h2>排班统计</h2>
-        <el-statistic title="本月预估工时" :value="shifts.list.length * 5" suffix="小时" />
+        <p class="summary-hint">按门店和月份汇总每人总工时与加班，跨午夜班次计入次日，重叠班次列入异常且当天不计。</p>
+        <el-button v-permission="['OWNER','MANAGER']" type="primary" plain :icon="Histogram" @click="$router.push('/schedule/monthly')">
+          查看月度工时统计
+        </el-button>
       </div>
     </div>
     <el-drawer v-model="formVisible" title="创建排班"><ScheduleForm @submit="save" /></el-drawer>
@@ -40,7 +43,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { MagicStick, Plus } from '@element-plus/icons-vue';
+import { Histogram, MagicStick, Plus } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import AppLayout from '@/components/layout/AppLayout.vue';
 import EmployeeAvatar from '@/components/common/EmployeeAvatar.vue';
@@ -106,5 +109,11 @@ article {
 
 .lower {
   margin-top: 18px;
+}
+
+.summary-hint {
+  color: #697066;
+  font-size: 13px;
+  line-height: 1.6;
 }
 </style>

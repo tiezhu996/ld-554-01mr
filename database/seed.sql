@@ -33,7 +33,19 @@ INSERT INTO permissions (role, module, action) VALUES
 INSERT INTO shifts (employee_id, date, shift_type, start_time, end_time, store_id, status) VALUES
 (2, CURDATE(), 'MORNING', '08:30:00', '13:30:00', 1, 'CHECKED_IN'),
 (3, CURDATE(), 'AFTERNOON', '13:30:00', '18:30:00', 1, 'CONFIRMED'),
-(4, CURDATE(), 'REST', '00:00:00', '00:00:00', 2, 'PENDING');
+(4, CURDATE(), 'REST', '00:00:00', '00:00:00', 2, 'PENDING'),
+-- 月度工时统计示例数据（均落在本月）
+-- 周然：正常班 9 小时，单日超 8 小时 → 1 小时加班
+(2, DATE_FORMAT(CURDATE(), '%Y-%m-05'), 'MORNING', '09:00:00', '18:00:00', 1, 'CONFIRMED'),
+-- 许安：跨午夜晚班 22:00-06:00，8 小时算到次日
+(3, DATE_FORMAT(CURDATE(), '%Y-%m-10'), 'NIGHT', '22:00:00', '06:00:00', 1, 'CONFIRMED'),
+-- 许安：同一天两段重叠班次 → 列入异常，当天不计入总工时
+(3, DATE_FORMAT(CURDATE(), '%Y-%m-15'), 'MORNING', '08:00:00', '12:00:00', 1, 'CONFIRMED'),
+(3, DATE_FORMAT(CURDATE(), '%Y-%m-15'), 'AFTERNOON', '10:00:00', '14:00:00', 1, 'PENDING'),
+-- 许安：休息班不计工时
+(3, DATE_FORMAT(CURDATE(), '%Y-%m-20'), 'REST', '00:00:00', '00:00:00', 1, 'CONFIRMED'),
+-- 陈禾（城西社区店）：8 小时整，无加班
+(4, DATE_FORMAT(CURDATE(), '%Y-%m-08'), 'MORNING', '08:30:00', '16:30:00', 2, 'CONFIRMED');
 
 INSERT INTO transactions (type, category, amount, description, related_employee_id, store_id, date, receipt, reviewed) VALUES
 ('INCOME', 'SALES', 28600.00, '湖滨旗舰店日销售收入', NULL, 1, CURDATE(), '/receipts/sales-001.jpg', TRUE),

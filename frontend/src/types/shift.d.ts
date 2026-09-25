@@ -11,3 +11,38 @@ export interface Shift {
   storeId: number;
   status: 'PENDING' | 'CONFIRMED' | 'CHECKED_IN';
 }
+
+export interface MonthlyWorkHourRow {
+  employeeId: number;
+  employeeNo: string;
+  employeeName: string;
+  storeName: string;
+  workDays: number;
+  totalHours: number;
+  regularHours: number;
+  overtimeHours: number;
+  exceptionDays: number;
+}
+
+export interface WorkHourException {
+  employeeId: number;
+  employeeNo: string;
+  employeeName: string;
+  date: string;
+  reason: string;
+  shiftIds: number[];
+}
+
+export interface MonthlyWorkHourSummary {
+  month: string;
+  storeId: number | null;
+  list: MonthlyWorkHourRow[];
+  exceptions: WorkHourException[];
+  totals: {
+    workDays: number;
+    totalHours: number;
+    regularHours: number;
+    overtimeHours: number;
+    exceptionDays: number;
+  };
+}

@@ -11,6 +11,13 @@ export const ShiftType = {
   REST: 'REST'
 } as const;
 
+export const ShiftTypeLabel = {
+  [ShiftType.MORNING]: '早班',
+  [ShiftType.AFTERNOON]: '中班',
+  [ShiftType.NIGHT]: '晚班',
+  [ShiftType.REST]: '休息'
+} as const;
+
 export const TransactionType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE'

@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import * as shiftService from '../services/shift.service.js';
+import * as workhourService from '../services/workhour.service.js';
 import { created, success } from '../utils/response.js';
 
 export async function index(req: Request, res: Response, next: NextFunction) {
@@ -29,6 +30,25 @@ export async function update(req: Request, res: Response, next: NextFunction) {
 export async function autoGenerate(req: Request, res: Response, next: NextFunction) {
   try {
     success(res, await shiftService.autoGenerateShifts(Number(req.body.storeId), req.body.date));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function monthlySummary(req: Request, res: Response, next: NextFunction) {
+  try {
+    success(res, await workhourService.getMonthlyWorkHours(req.query, req.user));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function exportMonthlySummary(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { filename, csv } = await workhourService.exportMonthlyWorkHours(req.query, req.user);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
+    res.send(csv);
   } catch (error) {
     next(error);
   }
